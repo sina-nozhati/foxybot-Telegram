@@ -92,6 +92,33 @@ install_dir="/opt/Hiddify-Telegram-Bot"
 
 branch="main"
 
+if [ -d "$install_dir" ]; then
+  echo "Directory $install_dir exists. Pulling latest changes..."
+  cd "$install_dir" || display_error_and_exit "Failed to change directory."
+  git pull origin "$branch" || echo "Failed to pull changes, continuing..."
+else
+  git clone -b "$branch" "$repository_url" "$install_dir" || display_error_and_exit "Failed to clone the repository."
+  cd "$install_dir" || display_error_and_exit "Failed to change directory."
+fi
+
+echo -e "${GREEN}Step 2: Installing requirements...${RESET}"
+echo "Trying standard installation..."
+if python3 -m pip install -r requirements.txt; then
+    echo "Requirements installed successfully."
+else
+    echo "Standard installation failed. Trying with --break-system-packages..."
+    if python3 -m pip install -r requirements.txt --break-system-packages; then
+        echo "Requirements installed successfully with --break-system-packages."
+    else
+        display_error_and_exit "Failed to install requirements."
+    fi
+fi
+
+
+echo -e "${GREEN}Step 3: Preparing ...${RESET}"
+logs_dir="$install_dir/Logs"
+receiptions_dir="$install_dir/UserBot/Receiptions"
+
 create_directory_if_not_exists() {
   if [ ! -d "$1" ]; then
     echo "Creating directory $1"
