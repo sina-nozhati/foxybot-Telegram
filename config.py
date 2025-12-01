@@ -98,20 +98,6 @@ def set_config_variables(configs, server_url):
     global ADMINS_ID, TELEGRAM_TOKEN, PANEL_URL, LANG, PANEL_ADMIN_ID, CLIENT_TOKEN
     json_admin_ids = configs["bot_admin_id"]
     ADMINS_ID = json.loads(json_admin_ids)
-    TELEGRAM_TOKEN = configs["bot_token_admin"]
-    try:
-        CLIENT_TOKEN = configs["bot_token_client"]
-    except KeyError:
-        CLIENT_TOKEN = None
-
-        colored("Example: 123456789\nIf you have more than one admin, split with comma(,)\n[get it from @userinfobot]",
-                "yellow"))
-    while True:
-        admin_id = input("[+] Enter Telegram Admin Number IDs: ")
-        admin_ids = admin_id.split(',')
-        admin_ids = [admin_id.strip() for admin_id in admin_ids]
-        if not all(admin_id.isdigit() for admin_id in admin_ids):
-            print(colored("Admin IDs must be numbers separated by commas!", "red"))
             continue
         admin_ids = [int(admin_id) for admin_id in admin_ids]
         break
