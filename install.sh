@@ -107,7 +107,7 @@ fi
 cd "$install_dir" || display_error_and_exit "Failed to change directory."
 
 echo -e "${GREEN}Step 2: Installing requirements...${RESET}"
-pip install -r requirements.txt || display_error_and_exit "Failed to install requirements."
+pip install -r requirements.txt || pip install -r requirements.txt --break-system-packages || display_error_and_exit "Failed to install requirements."
 
 
 echo -e "${GREEN}Step 3: Preparing ...${RESET}"

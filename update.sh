@@ -91,12 +91,12 @@ function update_bot() {
   display_message "${GREEN}Updating the bot...${RESET}"
   git stash
   if git pull origin "$branch"; then
-    pip install -r requirements.txt || display_error_and_exit "Failed to install requirements."
+    pip install -r requirements.txt || pip install -r requirements.txt --break-system-packages || display_error_and_exit "Failed to install requirements."
     nohup python3 hiddifyTelegramBot.py >>bot.log 2>&1 &
     display_message "${GREEN}Bot has been updated and restarted.${RESET}"
   else
     if git pull --rebase origin "$branch"; then
-      pip install -r requirements.txt || display_error_and_exit "Failed to install requirements."
+      pip install -r requirements.txt || pip install -r requirements.txt --break-system-packages || display_error_and_exit "Failed to install requirements."
       > $install_dir/bot.log
       nohup python3 hiddifyTelegramBot.py >>bot.log 2>&1 &
       display_message "${GREEN}Bot has been updated and restarted.${RESET}"
