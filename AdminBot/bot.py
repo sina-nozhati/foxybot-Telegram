@@ -2766,14 +2766,13 @@ def callback_query(call: CallbackQuery):
                                   reply_markup=markups.bot_user_info_markup(selected_telegram_id))
     
     elif key == "server_status":
-        from Utils.serverInfo import get_server_status
         msg_wait = bot.send_message(call.message.chat.id, MESSAGES['WAIT'])
         server = USERS_DB.find_server(id=int(value))
         if not server:
             bot.send_message(call.message.chat.id, MESSAGES['ERROR_SERVER_NOT_FOUND'])
             return
         server = server[0]
-        server_status_data = get_server_status(server)
+        server_status_data = utils.get_server_status(server)
         if not server_status_data:
             bot.send_message(call.message.chat.id, MESSAGES['ERROR_UNKNOWN'])
             return

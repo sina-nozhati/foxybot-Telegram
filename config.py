@@ -22,7 +22,7 @@ LOG_LOC = os.path.join(LOG_DIR, "hidyBot.log")
 BACKUP_LOC = os.path.join(os.getcwd(), "Backup")
 RECEIPTIONS_LOC = os.path.join(os.getcwd(), "UserBot", "Receiptions")
 BOT_BACKUP_LOC = os.path.join(os.getcwd(), "Backup", "Bot")
-API_PATH = "/api/v1"
+API_PATH = "/api/v2"
 HIDY_BOT_ID = "@HidyBotGroup"
 
 # if directories not exists, create it
@@ -110,43 +110,6 @@ def set_config_variables(configs, server_url):
     LANG = configs["bot_lang"]
     # PANEL_ADMIN_ID = ADMIN_DB.find_admins(uuid=urlparse(PANEL_URL).path.split('/')[2])
     PANEL_ADMIN_ID = urlparse(PANEL_URL).path.split('/')[2]
-    if not PANEL_ADMIN_ID:
-        print(colored("Admin panel UUID is not valid!", "red"))
-        raise Exception(f"Admin panel UUID is not valid!\nBe in touch with {HIDY_BOT_ID}")
-    PANEL_ADMIN_ID = PANEL_ADMIN_ID[0][0]
-
-
-def panel_url_validator(url):
-    if not (url.startswith("https://") or url.startswith("http://")):
-        print(colored("URL must start with http:// or https://", "red"))
-        return False
-    if url.endswith("/"):
-        url = url[:-1]
-    if url.endswith("admin"):
-        url = url.replace("/admin", "")
-    if url.endswith("admin/user"):
-        url = url.replace("/admin/user", "")
-    print(colored("Checking URL...", "yellow"))
-    try:
-        request = requests.get(f"{url}/admin/")
-    except requests.exceptions.ConnectionError as e:
-        print(colored("URL is not valid! Error in connection", "red"))
-        print(colored(f"Error: {e}", "red"))
-        return False
-    
-    if request.status_code != 200:
-        print(colored("URL is not valid!", "red"))
-        print(colored(f"Error: {request.status_code}", "red"))
-        return False
-    elif request.status_code == 200:
-        print(colored("URL is valid!", "green"))
-    return url
-
-
-def bot_token_validator(token):
-    print(colored("Checking Bot Token...", "yellow"))
-    try:
-        request = requests.get(f"https://api.telegram.org/bot{token}/getMe")
     except requests.exceptions.ConnectionError:
         print(colored("Bot Token is not valid! Error in connection", "red"))
         return False
