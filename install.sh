@@ -92,28 +92,6 @@ install_dir="/opt/Hiddify-Telegram-Bot"
 
 branch="main"
 
-if [ "$0" == "--pre-release" ]; then
-    branch="pre-release"
-fi
-
-echo "Selected branch: $branch"
-
-if [ -d "$install_dir" ]; then
-  echo "Directory $install_dir exists."
-else
-  git clone -b "$branch" "$repository_url" "$install_dir" || display_error_and_exit "Failed to clone the repository."
-fi
-
-cd "$install_dir" || display_error_and_exit "Failed to change directory."
-
-echo -e "${GREEN}Step 2: Installing requirements...${RESET}"
-pip install -r requirements.txt || pip install -r requirements.txt --break-system-packages || display_error_and_exit "Failed to install requirements."
-
-
-echo -e "${GREEN}Step 3: Preparing ...${RESET}"
-logs_dir="$install_dir/Logs"
-receiptions_dir="$install_dir/UserBot/Receiptions"
-
 create_directory_if_not_exists() {
   if [ ! -d "$1" ]; then
     echo "Creating directory $1"
